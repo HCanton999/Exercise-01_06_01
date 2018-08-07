@@ -43,6 +43,9 @@ function updateDays() {
     while (dates[28]) {
         deliveryDay.removeChild(dates[28]);
     }
+    if (deliveryYear.selectedIndex === -1) {
+        deliveryDay.selectedIndex = 0;
+    }
 }
 
 // function that sets up page on load event
