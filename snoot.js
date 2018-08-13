@@ -84,7 +84,7 @@ function autoCheckCustom() {
                 deliveryInputElements[i + 1].value =
                 billingInputElements[i].value;
             }
-            document.querySelector("#deliveryAddress select").value =
+            document.querySelector("#deliveryAddress select").value;
             document.querySelector("#billingAddress select").value;
         }
         // duplicate address - checkbox not checked - erase  
@@ -104,7 +104,41 @@ function autoCheckCustom() {
             var elementCount = inputElements.length;
             var currentElement;
             try {
-                alert("I am executing the try clause");
+                //loop through the input fields looking for blanks 
+                for (var i = 0; i < elementCount; i++) {
+                    currentElement = inputElements[i];
+                    //blanks
+                    if (currentElement.value === "") {
+                        currentElement.style.background = "rgb(255,233,233)";
+                        fieldsetValidity = false;
+                        
+                    }
+                    //not blanks
+                    else {
+                        currentElement.style.background = "rgb(255,255,255)";   
+                    }
+                }
+                //validate select list field
+                currentElement = document.querySelectorAll("#" + fieldsetId + " select")[0];
+                if (currentElement.selectedIndex === -1) {
+                    currentElement.style.border = "1px solid red";
+                    fieldsetValidity = false;
+                }else {
+                    currentElement.style.border = "";
+                }
+                // action for invalid fieldset
+                if (!fieldsetValidity) {
+                    if (fieldsetId === "billingAddress") {
+                        throw "please complete all billing Address information.";
+                        
+                    }
+                    else {
+                        throw "please complete all billing Delivery information.";
+                    }
+                }else {
+                    errorDiv.style.display = "none";
+                    errorDiv.innerHTML = "";
+                }
             } catch (msg){
             errorDiv.style.display = "block";
             errorDiv.innerHTML = msg;
@@ -120,6 +154,8 @@ function autoCheckCustom() {
             evt.returnValue = false;
         }
         formValidity = false;
+        validateAddress('billingAddress');
+        validateAddress('deliveryAddress');
         if (formValidity === true) {//form is valid
             document.getElementById("errorText").innerHTML = "";
             document.getElementById("errorText").style.display = "none";
