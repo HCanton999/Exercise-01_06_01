@@ -1,4 +1,3 @@
-
 /*
 Snoot.js
 form validation code for snoot.html
@@ -56,11 +55,11 @@ function updateDays() {
         deliveryDay.appendChild(twentyNine.cloneNode(true));
     }
     //else if its 30 day month thirty
-    else if (selectedMonth === "4" || selectedMonth === "6" || selectedMonth === "9" ||selectedMonth === "11") {
+    else if (selectedMonth === "4" || selectedMonth === "6" || selectedMonth === "9" || selectedMonth === "11") {
         deliveryDay.appendChild(thirty.cloneNode(true));
     }
     //else if 31 day month thirtyOne
-    else if (selectedMonth === "1" || selectedMonth === "3" || selectedMonth === "5" ||selectedMonth === "7" ||selectedMonth === "8" ||selectedMonth === "10" ||selectedMonth === "12") {
+    else if (selectedMonth === "1" || selectedMonth === "3" || selectedMonth === "5" || selectedMonth === "7" || selectedMonth === "8" || selectedMonth === "10" || selectedMonth === "12") {
         deliveryDay.appendChild(thirtyOne.cloneNode(true));
     }
 }
@@ -79,215 +78,265 @@ function autoCheckCustom() {
 }
 
 //function to cop billing to delivery address
-    function copyBillingAddress() {
-        var billingInputElements = document.querySelectorAll("#billingAddress input");
-        var deliveryInputElements = document.querySelectorAll("#deliveryAddress input");
-        // duplicate address - checkbox is checked - copy
-        if (document.getElementById("sameAddr").checked) {
-            for (var i = 0; i < billingInputElements.length; i++){
-                deliveryInputElements[i + 1].value =
+function copyBillingAddress() {
+    var billingInputElements = document.querySelectorAll("#billingAddress input");
+    var deliveryInputElements = document.querySelectorAll("#deliveryAddress input");
+    // duplicate address - checkbox is checked - copy
+    if (document.getElementById("sameAddr").checked) {
+        for (var i = 0; i < billingInputElements.length; i++) {
+            deliveryInputElements[i + 1].value =
                 billingInputElements[i].value;
-            }
-            document.querySelector("#deliveryAddress select").value;
-            document.querySelector("#billingAddress select").value;
         }
-        // duplicate address - checkbox not checked - erase  
-        else {
-            for (var i = 0; i < billingInputElements.length; i++){
-                deliveryInputElements[i + 1].value = "";
-            }
-            document.querySelector("#deliveryAddress select").selectedIndex = -1;
-            
+        document.querySelector("#deliveryAddress select").value;
+        document.querySelector("#billingAddress select").value;
+    }
+    // duplicate address - checkbox not checked - erase  
+    else {
+        for (var i = 0; i < billingInputElements.length; i++) {
+            deliveryInputElements[i + 1].value = "";
         }
-        }  
-        //function to validate address - billing & delivery
-        function validateAddress(fieldsetId) {
-            var inputElements = document.querySelectorAll("#" + fieldsetId + " input");
-            var errorDiv = document.querySelectorAll("#" + fieldsetId + " .errorMessage")[0];
-            var fieldsetValidity = true;
-            var elementCount = inputElements.length;
-            var currentElement;
-            try {
-                //loop through the input fields looking for blanks 
-                for (var i = 0; i < elementCount; i++) {
-                    currentElement = inputElements[i];
-                    //blanks
-                    if (currentElement.value === "") {
-                        currentElement.style.background = "rgb(255,233,233)";
-                        fieldsetValidity = false;
-                        
-                    }
-                    //not blanks
-                    else {
-                        currentElement.style.background = "rgb(255,255,255)";   
-                    }
-                }
-                //validate select list field
-                currentElement = document.querySelectorAll("#" + fieldsetId + " select")[0];
-                if (currentElement.selectedIndex === -1) {
-                    currentElement.style.border = "1px solid red";
-                    fieldsetValidity = false;
-                }else {
-                    currentElement.style.border = "";
-                }
-                // action for invalid fieldset
-                if (!fieldsetValidity) {
-                    if (fieldsetId === "billingAddress") {
-                        throw "please complete all billing Address information.";
-                        
-                    }
-                    else {
-                        throw "please complete all billing Delivery information.";
-                    }
-                }else {
-                    errorDiv.style.display = "none";
-                    errorDiv.innerHTML = "";
-                }
-            } catch (msg){
-            errorDiv.style.display = "block";
-            errorDiv.innerHTML = msg;
-            formValidity = false;
-            }
-        }
+        document.querySelector("#deliveryAddress select").selectedIndex = -1;
 
-        // function to validate delivery date
-        function validateDeliveryAddress() {
-            var selectElements = document.querySelectorAll("#deliveryDate" + " select");
-            var errorDiv = document.querySelectorAll("#deliveryDate" + " .errorMessage")[0];
-            var fieldsetValidity = true;
-            var elementCount = selectElements.length;
-            var currentElement;
-            try {
-                //loop through the select fields looking for blanks 
-                for (var i = 0; i < elementCount; i++) {
-                    currentElement = selectElements[i];
-                    //blanks
-                    if (currentElement.selectedIndex === -1) {
-                        currentElement.style.border = "1px solid red";
-                        fieldsetValidity = false;       
-                    }
-                    //not blanks
-                    else {
-                        currentElement.style.border = "";
- 
-                    }
-                }
-                // action for invalid fieldset
-                if (!fieldsetValidity) {
-                        throw "please specify a Delivery Date";
-                }else {
-                    errorDiv.style.display = "none";
-                    errorDiv.innerHTML = "";
-                }
-            } catch (msg){
-            errorDiv.style.display = "block";
-            errorDiv.innerHTML = msg;
-            formValidity = false;
-            }
-        }
-        // function to validate payment
-        function validatepayment() {
-            var selectElements = document.querySelectorAll("#paymentInfo" + " select");
-            var ccNumElement = document.getElementById("ccNum")
-            var errorDiv = document.querySelectorAll("#paymentInfo" + " .errorMessage")[0];
-            var fieldsetValidity = true;
-            var elementCount = selectElements.length;
-            var cvvElement = document.getElementById("cvv");
-            var cards = document.getElementsByName("PaymentType");
-            var currentElement;
-            //THIS IS WHERE WE WERE YESTURDAY
-            try {
-                //loop through the select fields looking for blanks 
-                for (var i = 0; i < elementCount; i++) {
-                    currentElement = selectElements[i];
-                    //blanks
-                    if (currentElement.selectedIndex === -1) {
-                        currentElement.style.border = "1px solid red";
-                        fieldsetValidity = false;       
-                    }
-                    //not blanks
-                    else {
-                        currentElement.style.border = "";
- 
-                    }
-                }
-                // action for invalid fieldset
-                if (!fieldsetValidity) {
-                        throw "please specify a Delivery Date";
-                }else {
-                    errorDiv.style.display = "none";
-                    errorDiv.innerHTML = "";
-                }
-            } catch (msg){
-            errorDiv.style.display = "block";
-            errorDiv.innerHTML = msg;
-            formValidity = false;
-            }
-        }
+    }
+}
+//function to validate address - billing & delivery
+function validateAddress(fieldsetId) {
+    var inputElements = document.querySelectorAll("#" + fieldsetId + " input");
+    var errorDiv = document.querySelectorAll("#" + fieldsetId + " .errorMessage")[0];
+    var fieldsetValidity = true;
+    var elementCount = inputElements.length;
+    var currentElement;
+    try {
+        //loop through the input fields looking for blanks 
+        for (var i = 0; i < elementCount; i++) {
+            currentElement = inputElements[i];
+            //blanks
+            if (currentElement.value === "") {
+                currentElement.style.background = "rgb(255,233,233)";
+                fieldsetValidity = false;
 
-        //function to validate entire form
-    function validateForm(evt) {
-        if (evt.preventDefault) {
-            evt.preventDefault();
-        }else {
-            evt.returnValue = false;
+            }
+            //not blanks
+            else {
+                currentElement.style.background = "rgb(255,255,255)";
+            }
         }
+        //validate select list field
+        currentElement = document.querySelectorAll("#" + fieldsetId + " select")[0];
+        if (currentElement.selectedIndex === -1) {
+            currentElement.style.border = "1px solid red";
+            fieldsetValidity = false;
+        } else {
+            currentElement.style.border = "";
+        }
+        // action for invalid fieldset
+        if (!fieldsetValidity) {
+            if (fieldsetId === "billingAddress") {
+                throw "please complete all billing Address information.";
+
+            } else {
+                throw "please complete all billing Delivery information.";
+            }
+        } else {
+            errorDiv.style.display = "none";
+            errorDiv.innerHTML = "";
+        }
+    } catch (msg) {
+        errorDiv.style.display = "block";
+        errorDiv.innerHTML = msg;
         formValidity = false;
-        validateAddress('billingAddress');
-        validateAddress('deliveryAddress');
-        validateDeliveryAddress();
-        if (formValidity === true) {//form is valid
-            document.getElementById("errorText").innerHTML = "";
-            document.getElementById("errorText").style.display = "none";
-            document.getElementsByTagName("form")[0].submit();
+    }
+}
+
+// function to validate delivery date
+function validateDeliveryAddress() {
+    var selectElements = document.querySelectorAll("#deliveryDate" + " select");
+    var errorDiv = document.querySelectorAll("#deliveryDate" + " .errorMessage")[0];
+    var fieldsetValidity = true;
+    var elementCount = selectElements.length;
+    var currentElement;
+    try {
+        //loop through the select fields looking for blanks 
+        for (var i = 0; i < elementCount; i++) {
+            currentElement = selectElements[i];
+            //blanks
+            if (currentElement.selectedIndex === -1) {
+                currentElement.style.border = "1px solid red";
+                fieldsetValidity = false;
+            }
+            //not blanks
+            else {
+                currentElement.style.border = "";
+
+            }
+        }
+        // action for invalid fieldset
+        if (!fieldsetValidity) {
+            throw "please specify a Delivery Date";
+        } else {
+            errorDiv.style.display = "none";
+            errorDiv.innerHTML = "";
+        }
+    } catch (msg) {
+        errorDiv.style.display = "block";
+        errorDiv.innerHTML = msg;
+        formValidity = false;
+    }
+}
+// function to validate payment
+function validatePayment(fieldsetId) {
+    var errorDiv = document.querySelectorAll("#paymentInfo" + " .errorMessage")[0];
+    var fieldsetValidity = true;
+    var ccNumElement = document.getElementById("ccNum");
+    var cvvElement = document.getElementById("cvv");
+    var cards = document.getElementsByName("PaymentType");
+    var selectElements = document.querySelectorAll("#paymentInfo" + " select");
+    var elementCount = selectElements.length;
+    var currentElement;
+
+    try {
+        //validate radio buttons must be on
+        if (!cards[0].checked && !cards[1].checked && !cards[2].checked && !cards[3].checked) {
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].style.outline = "1px solid red";
+            }
+            fieldsetValidity = false;
+        } else {
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].style.outline = "";
+            }
+        }
+        //Validate required card number
+        if (ccNumElement.value === "") {
+            ccNumElement.style.background = "rgb(255,233,233)";
+            formValidity = false;
         }else {
-            document.getElementById("errorText").innerHTML = "Please fix the indicated problems and then resubmit your order.";
-            document.getElementById("errorText").style.display = "block";
-            scroll(0,0);
+            ccNumElement.style.background = "rgb(255,255,255)";
+
+        }
+        //validate expiration date
+        for (var i = 0; i < elementCount; i++) {
+            currentElement = selectElements[i];
+            //blanks
+            if (currentElement.selectedIndex === -1) {
+                currentElement.style.border = "1px solid red";
+                fieldsetValidity = false;
+            }
+            //not blanks
+            else {
+                currentElement.style.border = "";
+
+            }
+        }
+        //Validate required cvv number
+        if (cvvElement.value === "") {
+            cvvElement.style.background = "rgb(255,233,233)";
+            formValidity = false;
+        }else {
+            cvvElement.style.background = "rgb(255,255,255)";
+
+        }
+        // action for invalid fieldset
+        if (!fieldsetValidity) {
+            throw "please complete all Payment info";
+        } else {
+            errorDiv.style.display = "none";
+            errorDiv.innerHTML = "";
+        }
+    } catch (msg) {
+        errorDiv.style.display = "block";
+        errorDiv.innerHTML = msg;
+        formValidity = false;
+    }
+}
+
+function validateMessage() {
+    var msgBox = document.getElementById("customText");
+    var errorDiv = document.querySelectorAll("#message" + " .errorMessage")[0];
+    var fieldsetValidity = true;
+    try {
+       //validate check box and text area
+        if (document.getElementById("custom").checked && (msgBox.value === "" || msgBox.value === msgBox.placeholder)) {
+            throw "Please enter your Custom Message text.";
+        } else {
+            errorDiv.style.display = "none";
+            errorDiv.innerHTML = "";
+            msgBox.style.background = "white";
         }
     }
+     catch (msg) {
+        errorDiv.style.display = "block";
+        errorDiv.innerHTML = msg;
+        msgBox.style.background = "rgb(255,233,233)";
+    }
+}
+
+
+//function to validate entire form
+function validateForm(evt) {
+    if (evt.preventDefault) {
+        evt.preventDefault();
+    } else {
+        evt.returnValue = false;
+    }
+    formValidity = false;
+    validateAddress('billingAddress');
+    validateAddress('deliveryAddress');
+    validateDeliveryAddress();
+    validatePayment();
+    validateMessage();
+    if (formValidity === true) { //form is valid
+        document.getElementById("errorText").innerHTML = "";
+        document.getElementById("errorText").style.display = "none";
+        document.getElementsByTagName("form")[0].submit();
+    } else {
+        document.getElementById("errorText").innerHTML = "Please fix the indicated problems and then resubmit your order.";
+        document.getElementById("errorText").style.display = "block";
+        scroll(0, 0);
+    }
+}
 
 // function that sets up page on load event
-    function setUpPage() {
+function setUpPage() {
     removeSelectDefaults();
     setUpDays();
     createEventListeners();
-    
+
 }
 
 //function to create our event listeners
-    function createEventListeners() {
-        var deliveryMonth = document.getElementById("delivMo");
-        if (deliveryMonth.addEventListener) {
-            deliveryMonth.addEventListener("change", updateDays, false);
-        } else if (deliveryMonth.attachEvent) {
-            deliveryMonth.attachEvent("onchange", updateDays);
-        }
-        var deliveryYear = document.getElementById("delivYr");
-        if (deliveryYear.addEventListener) {
-            deliveryYear.addEventListener("change", updateDays, false);
-        } else if (deliveryYear.attachEvent) {
-            deliveryYear.attachEvent("onchange", updateDays);  
-        }
-        var messageBox = document.getElementById("customText");
-        if (messageBox.addEventListener) {
-            messageBox.addEventListener("change", autoCheckCustom, false);
-        } else if (messageBox.attachEvent) {
-            messageBox.attachEvent("onchange", autoCheckCustom);  
-        }
-        var same = document.getElementById("sameAddr");
-        if (same.addEventListener) {
-            same.addEventListener("change", copyBillingAddress, false);
-        } else if (same.attachEvent) {
-            same.attachEvent("onchange", copyBillingAddress);  
-        }
-        var form = document.getElementsByTagName("form")[0];
-        if (form.addEventListener) {
-            form.addEventListener("submit",validateForm, false);
-        } else if (form.attachEvent) {
-            form.attachEvent("onsubmit", validateForm);  
-        }
+function createEventListeners() {
+    var deliveryMonth = document.getElementById("delivMo");
+    if (deliveryMonth.addEventListener) {
+        deliveryMonth.addEventListener("change", updateDays, false);
+    } else if (deliveryMonth.attachEvent) {
+        deliveryMonth.attachEvent("onchange", updateDays);
     }
+    var deliveryYear = document.getElementById("delivYr");
+    if (deliveryYear.addEventListener) {
+        deliveryYear.addEventListener("change", updateDays, false);
+    } else if (deliveryYear.attachEvent) {
+        deliveryYear.attachEvent("onchange", updateDays);
+    }
+    var messageBox = document.getElementById("customText");
+    if (messageBox.addEventListener) {
+        messageBox.addEventListener("change", autoCheckCustom, false);
+    } else if (messageBox.attachEvent) {
+        messageBox.attachEvent("onchange", autoCheckCustom);
+    }
+    var same = document.getElementById("sameAddr");
+    if (same.addEventListener) {
+        same.addEventListener("change", copyBillingAddress, false);
+    } else if (same.attachEvent) {
+        same.attachEvent("onchange", copyBillingAddress);
+    }
+    var form = document.getElementsByTagName("form")[0];
+    if (form.addEventListener) {
+        form.addEventListener("submit", validateForm, false);
+    } else if (form.attachEvent) {
+        form.attachEvent("onsubmit", validateForm);
+    }
+}
 // Page load event handlers
 if (window.addEventListener) {
     window.addEventListener("load", setUpPage, false);
