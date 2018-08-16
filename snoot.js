@@ -84,10 +84,9 @@ function copyBillingAddress() {
     // duplicate address - checkbox is checked - copy
     if (document.getElementById("sameAddr").checked) {
         for (var i = 0; i < billingInputElements.length; i++) {
-            deliveryInputElements[i + 1].value =
-                billingInputElements[i].value;
+            deliveryInputElements[i + 1].value = billingInputElements[i].value;
         }
-        document.querySelector("#deliveryAddress select").value;
+        document.querySelector("#deliveryAddress select").value =
         document.querySelector("#billingAddress select").value;
     }
     // duplicate address - checkbox not checked - erase  
@@ -167,7 +166,6 @@ function validateDeliveryAddress() {
             //not blanks
             else {
                 currentElement.style.border = "";
-
             }
         }
         // action for invalid fieldset
@@ -249,7 +247,7 @@ function validatePayment(fieldsetId) {
         formValidity = false;
     }
 }
-
+// function to validate the message box
 function validateMessage() {
     var msgBox = document.getElementById("customText");
     var errorDiv = document.querySelectorAll("#message" + " .errorMessage")[0];
@@ -270,6 +268,51 @@ function validateMessage() {
         msgBox.style.background = "rgb(255,233,233)";
     }
 }
+// functuon to validate create account
+function validateCreateAccount() {
+    var errorDiv = document.querySelectorAll("#createAccount" + " .errorMessage")[0];
+    var usernameElement = document.getElementById("username");
+    var pass1Element = document.getElementById("pass1");
+    var pass2Element = document.getElementById("pass2");
+    var invColor = "rgb(255,233,233)";
+    var passwordMismatch = false;
+    var fieldsetValidity = true;
+    usernameElement.style.background = "rgb(255,255,255)";
+    pass1Element.style.background = "rgb(255,255,255)";
+    pass2Element.style.background = "rgb(255,255,255)";
+    errorDiv.style.display = "none";
+    errorDiv.innerHTML = "";
+
+    try {
+     
+     if (usernameElement.value !== "" && pass1Element.value !== "" && pass2Element.value !== "") {
+         // one or more fields has data
+         if (pass1Element.value !== pass2Element.value) {// verify passwords match
+            fieldsetValidity = false;
+            passwordMismatch = true;
+             throw "Passwords entered do not match, please re-enter.";
+         }
+     }else if (usernameElement.value === "" && pass1Element.value === "" && pass2Element.value === "") {// no fields have data
+        fieldsetValidity = true;
+        passwordMismatch = false;
+     } else {
+         fieldsetValidity = false;
+         throw "Please enter all fields to Create Account.";
+     }
+    }
+     catch (msg) {
+        errorDiv.style.display = "block";
+        errorDiv.innerHTML = msg;
+        pass1Element.style.background = invColor;
+        pass2Element.style.background = invColor;
+        formValidity = false;
+        if (passwordMismatch) {
+            usernameElement.style.background = "rgb(255,255,255)";
+        }else {
+            usernameElement.style.background = invColor;
+        }
+    }
+}
 
 
 //function to validate entire form
@@ -285,6 +328,7 @@ function validateForm(evt) {
     validateDeliveryAddress();
     validatePayment();
     validateMessage();
+    validateCreateAccount();
     if (formValidity === true) { //form is valid
         document.getElementById("errorText").innerHTML = "";
         document.getElementById("errorText").style.display = "none";
